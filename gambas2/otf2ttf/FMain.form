@@ -1,0 +1,22 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,65,48)
+  Text = ("")
+  { prevod Button
+    MoveScaled(26,28,37,5)
+    Text = ("P\xC5\x99evod")
+  }
+  { FileView FileView
+    MoveScaled(26,1,37,26)
+    ShowDetailed = True
+    ShowHidden = True
+  }
+  { DirView DirView
+    MoveScaled(1,1,24,32)
+  }
+  { vypis TextArea
+    MoveScaled(1,34,63,13)
+    Text = ("")
+  }
+}

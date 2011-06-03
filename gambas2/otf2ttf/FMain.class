@@ -1,0 +1,25 @@
+' Gambas class file
+
+PUBLIC SUB _new()
+
+END
+
+PUBLIC SUB Form_Open()
+
+END
+
+PUBLIC SUB DirView_Click()
+  FileView.Dir = DirView.Current
+END
+
+PUBLIC SUB prevod_Click()
+  DIM soubory AS Array
+  DIM soub, ret AS String
+
+  soubory = Dir(DirView.Current, "*.otf")
+
+  FOR EACH soub IN soubory
+    SHELL "fontforge -script " & Application.Path & "/otf2ttf.sh '" & DirView.Current & "/" & soub & "'" TO ret
+    vypis.Insert(ret)
+  NEXT
+END
