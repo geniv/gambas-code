@@ -1,0 +1,20 @@
+# Gambas Project File 2.0
+# Compiled with Gambas 2.22.0
+Title=orfeus
+Startup=FMain
+Version=0.0.10
+Library=gb.qt
+Library=gb.form
+Library=gb.settings
+Description=fort beta programu orfeus
+Authors=geniv.radek@gmail.com (Geniv)
+TabSize=2
+SourcePath=/home/geniv/gambas2/make
+Maintainer=geniv
+Address=geniv@geniv-asus
+License=General Public Licence
+UseRelease=1
+Systems=debian,ubuntu
+Menus=Applications/Science/Data Analysis,Applications/Science/Data Analysis
+Categories=Science,Science
+Groups=misc,misc

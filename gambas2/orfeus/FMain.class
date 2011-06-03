@@ -1,0 +1,126 @@
+' Gambas class file
+
+PRIVATE pole AS NEW String[]
+PRIVATE poc AS Integer = 0
+PRIVATE otz AS Integer = 0
+PRIVATE obr_ok AS Picture
+PRIVATE obr_fail AS Picture
+
+PUBLIC SUB _new()
+  DIM prom AS String
+  DIM u AS File
+
+  u = OPEN "otazky.txt" FOR READ 
+  WHILE NOT Eof(u)
+    LINE INPUT #u, prom
+    pole.Add(Conv$(prom, "WINDOWS-1250", "UTF-8"))
+  WEND
+
+  obr_ok = Picture["ok.png"]
+  obr_fail = Picture["fail.png"]
+END
+
+PUBLIC SUB Form_Open()
+  Settings.Read(ME)
+END
+
+PRIVATE SUB otazka(smer AS String)
+
+  SELECT smer
+    CASE "next"
+      poc += 6
+      otz += 1
+
+    CASE "prev"
+      poc -= 6
+      otz -= 1
+  END SELECT 
+
+  TextLabel1.Text = pole[poc - 6]
+  RadioButton1.Text = pole[poc - 5]
+  RadioButton2.Text = pole[poc - 4]
+  RadioButton3.Text = pole[poc - 3]
+  IF Len(pole[poc - 2]) = 1 THEN 
+    RadioButton4.Visible = FALSE
+    Label4.Visible = FALSE
+      ELSE 
+    RadioButton4.Visible = TRUE
+    Label4.Visible = TRUE
+    RadioButton4.Text = pole[poc - 2]
+  ENDIF 
+
+  Label5.Text = Subst("Otázka č.&1 / &2", otz, pole.Length / 6)
+  Button1.Text = "Další otázka"
+
+  RadioButton5.Value = TRUE
+  PictureBox1.Visible = FALSE
+
+  RadioButton1.Enabled = TRUE
+  RadioButton2.Enabled = TRUE
+  RadioButton3.Enabled = TRUE
+  RadioButton4.Enabled = TRUE
+  CheckBox1.Enabled = TRUE
+  Button1.Enabled = IIf(poc <> pole.Length, TRUE, FALSE)
+  Button2.Enabled = IIf(otz >= 2, TRUE, FALSE)
+
+  CheckBox1_Click()
+END
+
+PUBLIC SUB CheckBox1_Click()
+  CheckBox1.Text = IIf(CheckBox1.Value, Subst("Správná odpověď: &1", pole[poc - 1]), "Zobrazit odpověď")
+END
+
+PUBLIC SUB Button1_Click()
+  otazka("next")
+END
+
+PUBLIC SUB Button2_Click()
+  otazka("prev")
+END
+
+PUBLIC SUB Form_Resize()
+  RadioButton1.Width = Panel2.Width - 30
+  RadioButton2.Width = Panel2.Width - 30
+  RadioButton3.Width = Panel2.Width - 30
+  RadioButton4.Width = Panel2.Width - 30
+END
+
+PUBLIC SUB RadioButton1_Click()
+  PictureBox1.Visible = TRUE
+  IF pole[poc - 1] = "a" THEN 
+    PictureBox1.Picture = obr_ok
+      ELSE 
+    PictureBox1.Picture = obr_fail
+  ENDIF 
+END
+
+PUBLIC SUB RadioButton2_Click()
+  PictureBox1.Visible = TRUE
+  IF pole[poc - 1] = "b" THEN 
+    PictureBox1.Picture = obr_ok
+      ELSE 
+    PictureBox1.Picture = obr_fail
+  ENDIF 
+END
+
+PUBLIC SUB RadioButton3_Click()
+  PictureBox1.Visible = TRUE
+  IF pole[poc - 1] = "c" THEN 
+    PictureBox1.Picture = obr_ok
+      ELSE 
+    PictureBox1.Picture = obr_fail
+  ENDIF 
+END
+
+PUBLIC SUB RadioButton4_Click()
+  PictureBox1.Visible = TRUE
+  IF pole[poc - 1] = "d" THEN 
+    PictureBox1.Picture = obr_ok
+      ELSE 
+    PictureBox1.Picture = obr_fail
+  ENDIF 
+END
+
+PUBLIC SUB Form_Close()
+  Settings.Write(ME)
+END

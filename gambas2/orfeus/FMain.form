@@ -1,0 +1,117 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,67,51)
+  Expand = True
+  Text = ("Geniv's fork orfeus beta tester")
+  Arrangement = Arrange.Fill
+  AutoResize = True
+  { HPanel1 HPanel
+    MoveScaled(0.7143,0.7143,65,49)
+    Expand = True
+    AutoResize = True
+    { Panel1 Panel
+      MoveScaled(1,1,46,10)
+      Expand = True
+      Arrangement = Arrange.Fill
+      Border = Border.Etched
+      { TextLabel1 TextLabel
+        MoveScaled(2,2,13,4)
+        Font = Font["Bold,10"]
+        Expand = True
+        Padding = 8
+        AutoResize = True
+        Text = (" ")
+        Alignment = Align.Normal
+      }
+    }
+    { Panel2 Panel
+      MoveScaled(1,12,44,23)
+      Expand = True
+      AutoResize = True
+      Border = Border.Sunken
+      { RadioButton5 RadioButton
+        MoveScaled(28,7,13,3)
+        Visible = False
+        Text = ("RadioButton5")
+      }
+      { RadioButton1 RadioButton
+        MoveScaled(3.5714,1,38.5714,5)
+        Enabled = False
+        Expand = True
+        Text = ("RadioButton1")
+      }
+      { RadioButton2 RadioButton
+        MoveScaled(3.5714,6,24,5)
+        Enabled = False
+        Expand = True
+        Text = ("RadioButton1")
+      }
+      { RadioButton3 RadioButton
+        MoveScaled(3.5714,11,24,5)
+        Enabled = False
+        Expand = True
+        Text = ("RadioButton1")
+      }
+      { RadioButton4 RadioButton
+        MoveScaled(3.5714,16,24,5)
+        Enabled = False
+        Expand = True
+        Text = ("RadioButton1")
+      }
+      { Label1 Label
+        MoveScaled(0.5714,2,2.5714,3)
+        Font = Font["Bold,10"]
+        Text = ("a)")
+      }
+      { Label2 Label
+        MoveScaled(0.5714,7,2.5714,3)
+        Font = Font["Bold,10"]
+        Text = ("b)")
+      }
+      { Label3 Label
+        MoveScaled(0.5714,12,2.5714,3)
+        Font = Font["Bold,10"]
+        Text = ("c)")
+      }
+      { Label4 Label
+        MoveScaled(0.5714,17,2.5714,3)
+        Font = Font["Bold,10"]
+        Text = ("d)")
+      }
+    }
+    { Panel3 Panel
+      MoveScaled(1,37,60,9)
+      Expand = True
+      AutoResize = True
+      Border = Border.Plain
+      { Button1 Button
+        MoveScaled(10,4,12,4)
+        Text = ("za\xC4\x8Dni test")
+      }
+      { Label5 Label
+        MoveScaled(1,1,10,2)
+        AutoResize = True
+        Text = (" ")
+      }
+      { Panel4 Panel
+        MoveScaled(24,1,31,7)
+        Border = Border.Plain
+        { PictureBox1 PictureBox
+          MoveScaled(0.7143,0.7143,5.7143,5.7143)
+          Stretch = True
+        }
+        { CheckBox1 CheckBox
+          MoveScaled(8,2,22,3)
+          Enabled = False
+          Text = ("Zobrzit odpov\xC4\x9B\xC4\x8F")
+        }
+      }
+      { Button2 Button
+        MoveScaled(1,4,7,4)
+        Enabled = False
+        Text = ("Zpet")
+      }
+    }
+  }
+}
