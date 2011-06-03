@@ -1,0 +1,224 @@
+' Gambas class file
+
+Private $docpath As String
+Private $change As Boolean = False
+Private $lastpos As Integer
+Private $wikiurl As String
+
+Public Sub _new()
+  
+End
+
+Public Sub Form_Open()
+  
+  Settings.Read(Me) 'nacteni geometrie okna
+  Me.X = Settings["window/x", 0]  'nacteni pozice
+  Me.Y = Settings["window/y", 0]
+  $docpath = Settings["lastpath"]
+  $lastpos = Settings["lastpos", 0]
+  $wikiurl = Settings["wikiurl"]
+  
+  bookmarks[0].Caption = ("Preview")
+  bookmarks[1].Caption = ("Source")
+  bookmarks[2].Caption = ("Html")
+  bookmarks[3].Caption = ("Wiki")
+  bookmarks[4].Caption = ("How to use?")
+  
+  If $docpath And Exist($docpath) Then
+    LoadDocPage(File.Load($docpath))
+    $change = False
+  Endif
+  
+End
+''TODO udelat pripadne i autorefresh kodu?
+Public Sub Form_Close()
+
+  Dim state As Integer
+  
+  Settings.Write(Me)  'ulozeni geometrie okna
+  Settings["window/x"] = Me.ScreenX - 1 'ulozeni pozice
+  Settings["window/y"] = Me.ScreenY - 27
+  Settings["lastpath"] = $docpath 'ulozeni posledniho pathu
+  Settings["lastpos"] = $lastpos  'ulozeni posledniho radku
+  Settings["wikiurl"] = $wikiurl  'ulozeni posledni wiki url
+  
+  If $change Then
+    state = Message.Question(("Are you sure you want to stop the translation?\nDocument has been changed and not saved!"), ("Save"), ("Save as..."), ("Cancel"))
+    Select state
+      Case 1
+        savesource_Click
+      Case 2
+        saveassource_Click
+    End Select
+  Endif
+  
+End
+
+Public Sub openpage_Click()
+  
+  If $docpath And Exist($docpath) Then Dialog.Path = $docpath
+  
+  If Dialog.OpenFile() Then Return
+  $docpath = Dialog.Path
+  LoadDocPage(File.Load(Dialog.Path))
+  $change = False
+  
+End
+
+Public Sub savesource_Click()
+  
+  File.Save($docpath, sourcearea.Text)
+  $change = False
+  
+End
+
+Public Sub saveassource_Click()
+  
+  If $docpath And Exist($docpath) Then Dialog.Path = File.Dir($docpath)
+  
+  If Dialog.SaveFile() Then Return
+  File.Save(Dialog.Path, sourcearea.Text)
+  $docpath = Dialog.Path
+  setTitle(File.BaseName(Dialog.Path))
+  $change = False
+  
+End
+
+Private Sub setTitle(text As String)
+  
+  If Not text Then text = ("Noname")
+  Me.Title = ("Easy doc - ") & text
+  
+End
+
+Private Sub LoadDocPage(sText As String, Optional sVersion As Integer)
+  
+  Dim sHtml As String
+  
+  Inc Application.Busy
+  
+  setTitle(File.BaseName($docpath))
+  
+  sHtml = doc.Encode(sText, sVersion)
+  
+  sourcearea.Text = sText
+  
+  htmlarea.Text = sHtml
+  htmlarea.Line = 0
+  
+  'http://gambasdoc.org/style.css
+  'pridani dodatecnych stylu
+  docpage.HTML = "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"cs\" lang=\"cs\" dir=\"ltr\">"
+  "<head>" 
+  "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">" 
+  "<link rel=\"stylesheet\" href=\"file://" & Application.Path & "/style.css\"></head><body>" & sHtml & "</body></html>"
+  
+  sourcearea.pos = $lastpos 'vraceni pozice cursoru
+  Dec Application.Busy
+  
+End
+
+Public Sub udatepage_Click()
+  
+  $lastpos = sourcearea.Pos 'nova pozice cursoru
+  If switchsource.Value Then bookmarks.Index = 0  'prepnuti na nahled
+  LoadDocPage(sourcearea.Text)
+  
+End
+
+Public Sub loadwikibutton_Click()
+  
+  wikipage.Url = If(Not $wikiurl, "http://gambasdoc.org/help/wiki", $wikiurl)
+  
+End
+
+Public Sub loadwikibutton_DblClick()
+  
+  $wikiurl = "" 'vraceni puvodni adresy
+  
+End
+
+Public Sub switchgambas2_Click()
+  'prepnuti na verzi Gambas2
+  
+  switchgambas2.Enabled = False
+  switchgambas3.Enabled = True
+  If $docpath Then LoadDocPage(File.Load($docpath), 2)
+  
+End
+
+Public Sub switchgambas3_Click()
+  'prepnuti na verzi Gambas3
+  
+  switchgambas2.Enabled = True
+  switchgambas3.Enabled = False
+  If $docpath Then LoadDocPage(File.Load($docpath), 3)
+  
+End
+
+Public Sub docpage_Progress()
+  
+  progressdocpage.Value = docpage.Progress
+  progressdocpage.Visible = If(progressdocpage.Value < 1, True, False)
+  
+End
+
+Public Sub searchsource_Click()
+  
+  'Debug docpage.SelectedText
+  If docpage.SelectedText Then
+    sourcearea.Pos = String.InStr(sourcearea.Text, docpage.SelectedText) - 1
+    bookmarks.Index = 1 'prepnuti na dalsi kartu
+  Endif
+  
+End
+
+Public Sub newsource_Click()
+  
+  docpage.HTML = ""
+  sourcearea.Clear
+  htmlarea.Clear
+  setTitle("")
+  $change = True
+  '$docpath = ""
+  sourcearea.SetFocus 'nastaveni zamereni
+  
+End
+
+Public Sub sourcearea_KeyPress()
+  
+  $change = True
+  
+End 
+
+Public Sub undosource_Click()
+  
+  sourcearea.Undo
+  
+End
+
+Public Sub redosource_Click()
+  
+  sourcearea.Redo
+  
+End
+
+Public Sub maintimer_Timer()
+  
+  savesource.Enabled = $change
+  bookmarks[1].Picture = If($change, Picture["icon:/16/record"], Null)
+  
+End
+
+Public Sub wikipage_Progress()
+  
+  progresswikipage.Value = wikipage.Progress
+  progresswikipage.Visible = If(progresswikipage.Value < 1, True, False)
+  
+End
+
+Public Sub wikipage_Load()
+  
+  $wikiurl = wikipage.Url
+  
+End

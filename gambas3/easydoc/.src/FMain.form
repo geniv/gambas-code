@@ -1,0 +1,197 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,83,48)
+  Arrangement = Arrange.Fill
+  { bookmarks TabStrip
+    MoveScaled(1,1,60,50)
+    Expand = True
+    Arrangement = Arrange.Fill
+    AutoResize = True
+    Padding = 7
+    Count = 5
+    Index = 0
+    Text = ("")
+    { VBox1 VBox
+      MoveScaled(1,1,58,36)
+      Spacing = True
+      Padding = 10
+      { HBox2 HBox
+        MoveScaled(2,1,55,4)
+        Spacing = True
+        Padding = 10
+        { openpage Button
+          MoveScaled(0,0,16,4)
+          ToolTip = ("Open new source code")
+          AutoResize = True
+          Text = ("Open")
+          Picture = Picture["icon:/16/open"]
+        }
+        { switchgambas2 ToggleButton
+          MoveScaled(18,0,4,4)
+          Enabled = False
+          Background = &H007FFF&
+          Mouse = Mouse.Pointing
+          ToolTip = ("Switch to Gambas 2")
+          Picture = Picture["img/new-logo-32.png"]
+          Border = False
+          Radio = True
+          Value = True
+        }
+        { switchgambas3 ToggleButton
+          MoveScaled(23,0,4,4)
+          Mouse = Mouse.Pointing
+          ToolTip = ("Switch to Gambas 3")
+          Picture = Picture["img/logo-32-head.png"]
+          Border = False
+          Radio = True
+        }
+        { progressdocpage ProgressBar
+          MoveScaled(29,0,16,4)
+          Visible = False
+        }
+        { searchsource Button
+          MoveScaled(46,0,16,4)
+          ToolTip = ("Search selected text in source code")
+          AutoResize = True
+          Text = ("Search in code")
+          Picture = Picture["icon:/16/find"]
+        }
+      }
+      { docpage WebView
+        MoveScaled(2,6,52,36)
+        Expand = True
+      }
+    }
+    Index = 1
+    Text = ("")
+    { VBox2 VBox
+      MoveScaled(1,1,55,40)
+      Spacing = True
+      Padding = 10
+      { HBox1 HBox
+        MoveScaled(1,1,52,4)
+        Spacing = True
+        Padding = 10
+        { udatepage Button
+          MoveScaled(0,0,16,4)
+          ToolTip = ("Source code update")
+          AutoResize = True
+          Text = ("Update")
+          Picture = Picture["icon:/16/refresh"]
+        }
+        { newsource Button
+          MoveScaled(1,1,16,4)
+          ToolTip = ("New source")
+          AutoResize = True
+          Text = ("New")
+          Picture = Picture["icon:/16/new"]
+        }
+        { savesource Button
+          MoveScaled(2,-1,16,4)
+          ToolTip = ("Save source")
+          AutoResize = True
+          Text = ("Save")
+          Picture = Picture["icon:/16/save"]
+        }
+        { saveassource Button
+          MoveScaled(4,1,16,4)
+          ToolTip = ("Save as source")
+          AutoResize = True
+          Text = ("Save as...")
+          Picture = Picture["icon:/16/save-as"]
+        }
+        { switchsource CheckBox
+          MoveScaled(20,0,24,4)
+          Text = ("Switch after update")
+        }
+        { undosource Button
+          MoveScaled(41,0,4,4)
+          ToolTip = ("Undo")
+          AutoResize = True
+          Picture = Picture["icon:/16/undo"]
+        }
+        { redosource Button
+          MoveScaled(45,0,4,4)
+          ToolTip = ("Redo")
+          AutoResize = True
+          Picture = Picture["icon:/16/redo"]
+        }
+      }
+      { sourcearea TextArea
+        MoveScaled(2,6,56,42)
+        Expand = True
+      }
+    }
+    Index = 2
+    Text = ("")
+    { htmlarea TextArea
+      MoveScaled(0,0,56,42)
+      ReadOnly = True
+    }
+    Index = 3
+    Text = ("")
+    { VBox3 VBox
+      MoveScaled(3,2,50,36)
+      Spacing = True
+      Padding = 10
+      { HBox3 HBox
+        MoveScaled(1,1,39,4)
+        Spacing = True
+        Padding = 10
+        { loadwikibutton Button
+          MoveScaled(0,0,16,4)
+          AutoResize = True
+          Text = ("Load wiki")
+          Picture = Picture["icon:/16/book"]
+        }
+        { progresswikipage ProgressBar
+          MoveScaled(23,0,16,4)
+          Visible = False
+        }
+      }
+      { wikipage WebView
+        MoveScaled(3,7,16,16)
+        Expand = True
+      }
+    }
+    Index = 4
+    Text = ("")
+    { Panel1 Panel
+      MoveScaled(1,1,57,39)
+      Arrangement = Arrange.Vertical
+      Spacing = True
+      Padding = 10
+      { Label1 Label
+        MoveScaled(1,1,24,4)
+        Text = ("1) Get your source-code (in plain/text format) from www.gambasdoc.org (you must have translator account) and save it somewhere in you computer")
+      }
+      { Label2 Label
+        MoveScaled(1,5,24,4)
+        Text = ("2) Open downloaded wiki code (Open button)")
+      }
+      { Label3 Label
+        MoveScaled(1,9,24,4)
+        Text = ("3) First tab (Preview) should make light preview for you (benefit: it's offline)")
+      }
+      { Label4 Label
+        MoveScaled(1,13,24,4)
+        Text = ("4) Source tab contains source code which you are editing")
+      }
+      { Label5 Label
+        MoveScaled(1,17,24,4)
+        Text = ("5) After you're done with your changes, click update button for refreshing the preview tab")
+      }
+      { Label6 Label
+        MoveScaled(1,22,24,4)
+        Text = ("Tab Html is only informational.\nWiki tab should help you little bit with wiki code syntaxs")
+      }
+    }
+    Index = 0
+  }
+  { maintimer #Timer
+    #MoveScaled(53,1)
+    Enabled = True
+    Delay = 500
+  }
+}

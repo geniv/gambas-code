@@ -1,0 +1,16 @@
+# Gambas Project File 3.0
+# Compiled with Gambas 2.99.1
+Title=Easy doc
+Startup=FMain
+Version=0.0.3
+Component=gb.image
+Component=gb.qt4
+Component=gb.form
+Component=gb.settings
+Component=gb.qt4.webkit
+Description="Program for easier translation of Gambas documentation."
+Authors="geniv <geniv.radek@gmail.com>"
+TabSize=2
+Translate=1
+Language=en
+SourcePath=/home/geniv/gambas3
