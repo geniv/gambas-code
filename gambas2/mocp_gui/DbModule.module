@@ -1,0 +1,145 @@
+' Gambas module file
+PRIVATE dtb AS NEW Connection
+PRIVATE typdb AS String
+PRIVATE host AS String
+PRIVATE name AS String
+
+PUBLIC SUB _init()
+  typdb = "sqlite3"
+  host = Application.Path
+  'name = "mocp_profile" 'jiank!
+END
+
+PUBLIC SUB ZavriDatabazi()
+  TRY dtb.Close()
+  IF ERROR THEN PRINT "Chyba zavreni databaze"
+END
+
+PUBLIC SUB PripojeniDatabaze(nazev AS String)
+  DIM tabulka AS Table
+
+  name = nazev
+  dtb.Type = typdb
+  dtb.Host = host
+
+  TRY dtb.Open()
+  IF ERROR THEN 
+    PRINT "Chyba otevreni databaze"
+    Error.Raise(Error.Text)
+  ENDIF
+
+  IF NOT dtb.Databases.Exist(name) THEN 
+    dtb.Databases.Add(name)
+    PRINT "databaze neexistuje, tedy bude vytvořena"
+    WAIT 0.5
+  ENDIF
+  dtb.Close()
+
+  dtb.Host = host
+  dtb.Name = name
+  dtb.Open()
+
+  'vytvoreni tabulek
+  IF NOT dtb.Tables.Exist("vzhled") THEN 
+    tabulka = dtb.Tables.Add("vzhled")
+    tabulka.Fields.Add("id", db.Serial)
+    tabulka.Fields.Add("klic", db.String)
+    tabulka.Fields.Add("hodnota", db.String)
+    tabulka.Fields.Add("x", db.Integer)
+    tabulka.Fields.Add("y", db.Integer)
+    tabulka.Fields.Add("width", db.Integer)
+    tabulka.Fields.Add("height", db.Integer)
+    tabulka.Fields.Add("transparent", db.Boolean)
+    tabulka.Fields.Add("visible", db.Boolean)
+    tabulka.Fields.Add("on_url", db.Blob)
+    tabulka.Fields.Add("off_url", db.Blob)
+    tabulka.Fields.Add("border", db.Integer)
+    tabulka.Fields.Add("rotace", db.Boolean)
+    tabulka.Fields.Add("smer", db.Boolean)
+    tabulka.Fields.Add("font_color", db.String)
+    tabulka.Fields.Add("mouse", db.String)
+    tabulka.Fields.Add("pozadi", db.String)
+    tabulka.Fields.Add("tooltip", db.String)
+    tabulka.Fields.Add("enabled", db.Boolean)
+    tabulka.Fields.Add("font", db.String)
+    tabulka.Fields.Add("povoleni", db.String)
+    tabulka.PrimaryKey = ["id"]
+    tabulka.Update()
+    PRINT "tabulka " & nazev & " vzhledu neexistuje, tedy bude vytvořena"
+  ENDIF
+
+  IF NOT dtb.Tables.Exist("autor") THEN 
+    tabulka = dtb.Tables.Add("autor")
+    tabulka.Fields.Add("id", db.Serial)
+    tabulka.Fields.Add("nazev", db.String)
+    tabulka.Fields.Add("popisek", db.String)
+    tabulka.Fields.Add("autor", db.String)
+    tabulka.Fields.Add("verze", db.String)
+    tabulka.Fields.Add("vytvoreno", db.Date)
+    tabulka.Fields.Add("upraveno", db.Date)
+    tabulka.PrimaryKey = ["id"]
+    tabulka.Update()
+    PRINT "tabulka autora neexistuje, tedy bude vytvořena"
+  ENDIF
+END
+
+PUBLIC SUB NactiHodnotuNastaveni(klic AS String, hodnota AS String) AS Variant
+  DIM res AS Result
+  res = dtb.Edit("vzhled", "klic=&1", klic)
+  IF res.Count = 1 THEN 
+    RETURN res[hodnota]
+      ELSE 
+    PRINT "hodnota adresy: " & klic & " je nedostupna!"
+  ENDIF 
+END
+
+PUBLIC SUB NactiHodnotuAutora(klic AS String, hodnota AS String) AS Variant
+  DIM res AS Result
+  res = dtb.Edit("autor", "klic=&1", klic)
+  IF res.Count = 1 THEN 
+    RETURN res[hodnota]
+      ELSE 
+    PRINT "hodnota adresy: " & klic & " je nedostupna!"
+  ENDIF
+END
+
+  'dtb.Begin
+  '   newPicture = databaseConnection.Create("pictures")
+  ' ' Save temp image as png file
+  ' img = Image.Load(ImagePath)
+  ' img.Save(tempFile)
+  ' newPicture["image"] = File.Load(tempFile)
+  ' ' Create image thumb
+  ' IF img.Width > thumbSize OR img.Height > thumbSize THEN 
+  '   ' Calc factor to scale isotropic
+  '   scale = Min(ThumbSize / img.Width, ThumbSize / img.Height)
+  '   img = img.Stretch(img.Width * scale, img.Height * scale, TRUE)
+  '   img.Save(tempFile)
+  ' END IF
+  ' newPicture["thumb"] = File.Load(tempFile)
+  ' ' Add description and update
+  ' newPicture["description"] = "Image " & File.BaseName(ImagePath) & "  added: " & Format(Now, "dddd, dd mmmm yyyy hh:nn:ss")
+  ' eTime = Timer
+  ' newPicture.Update
+  
+'   Select()
+'   ResultPictures = databaseConnection.Edit("pictures")
+' CATCH
+'   Error.Raise("<b>Select database records error</b><hr>Error:<br>" & DConv(Error.Text))
+' END
+' 
+' PUBLIC SUB Update(Row AS Integer, Description AS String)
+'   ResultPictures.MoveTo(Row)
+'   ResultPictures["description"] = Conv(Description, Desktop.Charset, databaseConnection.Charset)
+'   ResultPictures.Update()
+' CATCH
+'   Error.Raise("<b>Update database record error</b><hr>Error:<br>" & DConv(Error.Text))
+' END
+' 
+' PUBLIC SUB Delete(Row AS Integer)
+'   ResultPictures.MoveTo(Row)
+'   ResultPictures.Delete()
+' CATCH
+'   Error.Raise("<b>Delete database record error</b><hr>Error:<br>" & DConv(Error.Text))
+' END
+

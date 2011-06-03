@@ -1,0 +1,61 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,45,34)
+  Text = ("")
+  Border = Window.Fixed
+  { Frame2 Frame
+    MoveScaled(1,1,42,32)
+    Text = ("Konfigurace programu")
+    { TextBox1 TextBox
+      MoveScaled(20,3,20,4)
+      Text = ("xterm")
+    }
+    { Label1 Label
+      MoveScaled(2,3,15,3)
+      Text = ("u\xC5\xBE\xC3\xADvan\xC3\xA1 konzole")
+    }
+    { ComboBox1 ComboBox
+      MoveScaled(16,8,24,4)
+      Text = ("vyber si vzhled")
+      List = [("vzhled 1"), ("vzhled 2"), ("vzhled 3")]
+    }
+    { Label2 Label
+      MoveScaled(1,8,11,3)
+      Text = ("vzhled")
+    }
+    { RadioButton1 RadioButton
+      MoveScaled(3,12,16,3)
+      Text = ("ptat se")
+      Value = True
+    }
+    { RadioButton2 RadioButton
+      MoveScaled(3,16,16,3)
+      Text = ("neptat se")
+    }
+    { Panel2 Panel
+      MoveScaled(6,19,25,8)
+      Enabled = False
+      Border = Border.Etched
+      { RadioButton4 RadioButton
+        MoveScaled(1.1429,4,23,3)
+        Text = ("zav\xC5\x99\xC3\xADt gui + exit mocp")
+      }
+      { RadioButton3 RadioButton
+        MoveScaled(1,1,16,3)
+        Text = ("jen zav\xC5\x99\xC3\xADt gui")
+        Value = True
+      }
+    }
+    { btnOK Button
+      MoveScaled(12,28,14,3)
+      Text = ("OK")
+      Default = True
+    }
+    { btnCancel Button
+      MoveScaled(27,28,14,3)
+      Text = ("Cancel")
+      Cancel = True
+    }
+  }
+}

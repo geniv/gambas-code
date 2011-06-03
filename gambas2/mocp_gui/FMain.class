@@ -1,0 +1,502 @@
+' Gambas class file
+
+PRIVATE $info AS String
+PRIVATE $MX AS Integer
+PRIVATE $MY AS Integer
+PRIVATE stav AS String
+PRIVATE delka AS Integer
+PRIVATE aktualni AS Integer
+PRIVATE posovani AS Boolean
+PRIVATE terminal AS String
+'PRIVATE lastsong AS String
+
+PUBLIC SUB _new()
+  DIM overeni AS String
+  'DIM res AS Result
+
+  casovac.Delay = 500
+  casovac.Enabled = TRUE
+  trayicon.Visible = FALSE
+  mp3file.Text = "" 'resetovani obsahu cesty
+  NacteniHodnot()
+  posovani = FALSE
+
+  FileView.ShowDirectory = TRUE 'zobrazeni slozek
+
+  DbModule.PripojeniDatabaze("vzhled_mocp")
+  'nacitani hodnot z db!
+
+  terminal = "xterm"  's prikazem na execude
+
+PRINT DbModule.NactiHodnotuNastaveni("klic2", "hodnota")
+'vykoumat obrazky
+
+  ME.Picture = Picture.Load(Application.Path & "/img/plocha.png")
+  'ME.Width = ME.Picture.Width
+  'ME.Height = ME.Picture.Height
+  'ME.Mask = FALSE
+  'ME.Center
+
+  minimalizace.Picture = Picture.Load(Application.Path & "/img/min_off.png")
+  'w
+  'h
+  minimalizace.Picture.Transparent = TRUE
+
+  zavrit.Picture = Picture.Load(Application.Path & "/img/close_off.png")
+  'w
+  'h
+  zavrit.Picture.Transparent = TRUE
+
+  'FileView.Filter = ["*.mp3"] 'nacitat filtr! ;*.pls;*.m3u ?!
+
+  'PRINT Application.Version
+
+  'pokud neni spusten spusti pouze server
+  SHELL ("ps -A | grep ? | grep mocp") TO overeni
+  IF overeni = "" THEN
+    EXEC ["mocp", "--server"]
+  ENDIF
+
+'struktura skinu: sqlite3 databaze
+'sloupce db: id <PK>, skin(int), klic, hodnota, x, y, width, height,
+'            transparent, visible, on_url, off_url(obrazek do BD),
+'            border, rotace, smer, font_color, mouse,
+'            pozadi, tooltip, enabled, font, povoleni (co se ma pro dany typ editovat)
+
+'pripadne jeste jednu tabulku se seznamem skinu
+'obsahovat by mela: id <PK>, nazev, popisek, autor
+
+'v konfiguraci - playlist? a nebo do sqlite3
+END
+
+PUBLIC SUB Form_Open()
+  'nacteni hodnot
+  ME.Top = Settings["Window/Top", ME.Top]
+  ME.Left = Settings["Window/Left", ME.Left]
+  'skin
+  volume.Value = Settings["Player/Volume", 35]
+  NastaveniVolume()
+  stuffle.Value = Settings["Player/Stuffle", FALSE]
+  autonext.Value = Settings["Player/AutoNext", TRUE]
+  repeat.Value = Settings["Player/Repeat", FALSE]
+  NastaveniFunkci()
+  DirView.Current = Settings["Player/LastDir"]
+  FileView.Current = Settings["Player/LastFile"]
+  FileView.ShowHidden = Settings["Player/ShowHidden", FALSE]
+  unhide.Checked = FileView.ShowHidden
+  FileView.ShowDetailed = Settings["Player/ShowDetail", FALSE]
+  SELECT CASE FileView.ShowDetailed
+    CASE TRUE
+      style1.Checked = FALSE
+      style2.Checked = TRUE
+
+    CASE FALSE
+      style1.Checked = TRUE
+      style2.Checked = FALSE
+  END SELECT
+
+  'lastsong = Settings["Player/LastSong", ""]
+END
+
+PUBLIC SUB Form_Close()
+  'ulozeni hodnot
+  Settings["Window/Top"] = ME.Top
+  Settings["Window/Left"] = ME.Left
+  'skin
+  Settings["Player/Volume"] = volume.Value
+  Settings["Player/Stuffle"] = stuffle.Value
+  Settings["Player/AutoNext"] = autonext.Value
+  Settings["Player/Repeat"] = repeat.Value
+
+  Settings["Player/LastDir"] = DirView.Current
+  Settings["Player/LastFile"] = FileView.Current
+  Settings["Player/ShowHidden"] = FileView.ShowHidden
+  Settings["Player/ShowDetail"] = FileView.ShowDetailed
+
+  'IF mp3file.Text <> "" THEN
+  '  Settings["Player/LastSong"] = mp3file.Text
+  'ENDIF
+
+  DbModule.ZavriDatabazi()
+END
+
+PRIVATE SUB NacteniHodnot()
+  DIM pos_begin, pos_end AS Integer
+  DIM titulek, overeni, typ AS String
+
+  EXEC ["mocp", "-i"] TO $info
+
+  IF onoffcontroll.Value THEN controllout.Text = $info
+
+  'nacitat state!! jako prvni!
+  pos_begin = InStr($info, "State: ")
+  pos_end = InStr($info, "\n", pos_begin)
+  pos_begin = InStr($info, ": ", pos_begin) + 2
+  stav = Mid$($info, pos_begin, (pos_end - pos_begin))
+  state.Text = stav
+
+  SELECT CASE stav
+    CASE "STOP"
+      'PRINT "zastaveno"
+      'obr zastaveno
+    RETURN
+
+    CASE "PLAY", "PAUSE"
+      'mp3 file
+      pos_begin = InStr($info, "File: ")
+      pos_end = InStr($info, "\n", pos_begin)
+      pos_begin = InStr($info, ": ", pos_begin) + 2
+      mp3file.Text = Mid$($info, pos_begin, (pos_end - pos_begin))
+
+      typ = Mid$(mp3file.Text, 1, 7)  'hlidani internet radia
+
+      'pokud neni internet radio
+      IF typ <> "http://" THEN 
+        progress.Enabled = TRUE
+        posuvnik.Enabled = TRUE
+        'progress bar
+        pos_begin = InStr($info, "TotalSec: ")
+        pos_end = InStr($info, "\n", pos_begin)
+        pos_begin = InStr($info, ": ", pos_begin) + 2
+        delka = CInt(Mid$($info, pos_begin, (pos_end - pos_begin)))
+
+        pos_begin = InStr($info, "CurrentSec: ")
+        pos_end = InStr($info, "\n", pos_begin)
+        pos_begin = InStr($info, ": ", pos_begin) + 2
+        aktualni = CInt(Mid$($info, pos_begin, (pos_end - pos_begin)))
+
+        progress.Value = aktualni / delka
+        posuvnik.MinValue = 0
+        posuvnik.MaxValue = delka
+        'zamezeni auto dosazavani
+        IF NOT posovani THEN 
+          posuvnik.Value = aktualni
+        ENDIF
+
+        'totaltime
+        pos_begin = InStr($info, "TotalTime: ")
+        pos_end = InStr($info, "\n", pos_begin)
+        pos_begin = InStr($info, ": ", pos_begin) + 2
+        totaltime.Text = Mid$($info, pos_begin, (pos_end - pos_begin))
+
+        'timeleft
+        pos_begin = InStr($info, "TimeLeft: ")
+        pos_end = InStr($info, "\n", pos_begin)
+        pos_begin = InStr($info, ": ", pos_begin) + 2
+        timeleft.Text = Mid$($info, pos_begin, (pos_end - pos_begin))
+          ELSE 
+        progress.Enabled = FALSE
+        posuvnik.Enabled = FALSE
+      ENDIF 
+
+      'title
+      pos_begin = InStr($info, "Title: ")
+      pos_end = InStr($info, "\n", pos_begin)
+      pos_begin = InStr($info, ": ", pos_begin) + 2
+      titulek = Mid$($info, pos_begin, (pos_end - pos_begin))
+
+      'artist
+      pos_begin = InStr($info, "Artist: ")
+      pos_end = InStr($info, "\n", pos_begin)
+      pos_begin = InStr($info, ": ", pos_begin) + 2
+      artist.Text = Mid$($info, pos_begin, (pos_end - pos_begin))
+
+      'songtitle
+      pos_begin = InStr($info, "SongTitle: ")
+      pos_end = InStr($info, "\n", pos_begin)
+      pos_begin = InStr($info, ": ", pos_begin) + 2
+      songtitle.Text = Mid$($info, pos_begin, (pos_end - pos_begin))
+
+      'album
+      pos_begin = InStr($info, "Album: ")
+      pos_end = InStr($info, "\n", pos_begin)
+      pos_begin = InStr($info, ": ", pos_begin) + 2
+      album.Text = Mid$($info, pos_begin, (pos_end - pos_begin))
+
+      'currenttime
+      pos_begin = InStr($info, "CurrentTime: ")
+      pos_end = InStr($info, "\n", pos_begin)
+      pos_begin = InStr($info, ": ", pos_begin) + 2
+      currenttime.Text = Mid$($info, pos_begin, (pos_end - pos_begin))
+
+      'bitrate
+      pos_begin = InStr($info, "Bitrate: ")
+      pos_end = InStr($info, "\n", pos_begin)
+      pos_begin = InStr($info, ": ", pos_begin) + 2
+      bitrate.Text = Mid$($info, pos_begin, (pos_end - pos_begin))
+
+      'avgbitrate
+      pos_begin = InStr($info, "AvgBitrate: ")
+      pos_end = InStr($info, "\n", pos_begin)
+      pos_begin = InStr($info, ": ", pos_begin) + 2
+      avgbitrate.Text = Mid$($info, pos_begin, (pos_end - pos_begin))
+
+      'rate
+      pos_begin = InStr($info, "Rate: ")
+      pos_end = InStr($info, "\n", pos_begin)
+      pos_begin = InStr($info, ": ", pos_begin) + 2
+      rate.Text = Mid$($info, pos_begin, (pos_end - pos_begin))
+
+      IF titulek = "" THEN
+        titulek = File.BaseName(mp3file.Text)
+      ENDIF
+
+      title.Text = titulek
+      'promyslet efekty!
+      'EffectStyle.RotujiciText(title, TRUE)  'volat jako proceduru pres parametr vraci automaticky
+
+      SHELL ("ps -A | grep pts | grep mocp") TO overeni
+      IF overeni = "" THEN 
+        controllterm.Enabled = TRUE
+          ELSE 
+        controllterm.Enabled = FALSE  'kdyz je mocp spusteny v konzoli s grafikou
+      ENDIF
+
+      trayicon.Text = stav & ": " & titulek
+    RETURN 
+
+    DEFAULT 
+      PRINT "tak nic no..."
+    RETURN 
+  END SELECT
+END
+
+PUBLIC SUB casovac_Timer()
+  NacteniHodnot()
+END
+
+PUBLIC SUB zavrit_Enter()
+  zavrit.Picture = Picture.Load(Application.Path & "/img/close_on.png")
+END
+
+PUBLIC SUB zavrit_Leave()
+  zavrit.Picture = Picture.Load(Application.Path & "/img/close_off.png")
+END
+
+PUBLIC SUB zavrit_Click()
+  SELECT CASE Message.Question("Zavřít ovladací gui a nebo uplně ukončit mocp?", "zavřít gui", "uplně ukonči mocp i gui", "storno")
+    CASE 1
+      ME.Close()
+    RETURN
+
+    CASE 2
+      EXEC ["mocp", "--exit"]
+      ME.Close()
+    RETURN
+
+    CASE 3
+      RETURN
+  END SELECT
+END
+
+PUBLIC SUB minimalizace_Enter()
+  minimalizace.Picture = Picture.Load(Application.Path & "/img/min_on.png")
+END
+
+PUBLIC SUB minimalizace_Leave()
+  minimalizace.Picture = Picture.Load(Application.Path & "/img/min_off.png")
+END
+
+PUBLIC SUB minimalizace_Click()
+  ME.Hide()
+  trayicon.Visible = TRUE
+END
+
+PUBLIC SUB trayicon_MouseDown()
+  IF Mouse.Button = 1 THEN 
+    ME.Show()
+    trayicon.Visible = FALSE
+  ENDIF
+END
+
+PUBLIC SUB Form_MouseDown()
+  $MX = Mouse.ScreenX - ME.X
+  $MY = Mouse.ScreenY - ME.Y
+END
+
+PUBLIC SUB Form_MouseMove()
+  ME.Move(Mouse.ScreenX - $MX, Mouse.ScreenY - $MY)
+END
+
+PUBLIC SUB play_Click()
+  SELECT CASE stav
+    CASE "STOP"
+      'IF lastsong <> "" THEN 
+      '  EXEC ["mocp", "--playit", lastsong]
+      '    ELSE
+        EXEC ["mocp", "--play"]
+      'ENDIF
+      'obr zastaveno
+    RETURN
+
+    CASE "PAUSE"
+      EXEC ["mocp", "--toggle-pause"]
+      'obr pause
+    RETURN
+
+    CASE "PLAY"
+      EXEC ["mocp", "--toggle-pause"]
+    RETURN
+
+    DEFAULT
+      PRINT "tak nic no..."
+    RETURN 
+  END SELECT
+END
+
+PUBLIC SUB stop_Click()
+  EXEC ["mocp", "--stop"]
+END
+
+PUBLIC SUB prev_Click()
+  EXEC ["mocp", "--previous"]
+END
+
+PUBLIC SUB next_Click()
+  EXEC ["mocp", "--next"]
+END
+
+PUBLIC SUB volume_Change()
+  NastaveniVolume()
+END
+
+PRIVATE SUB NastaveniVolume()
+  EXEC ["mocp", "--volume", volume.Value]
+  volume.ToolTip = volume.Value & "%"
+  curvolume.Text = volume.ToolTip
+END
+
+PUBLIC SUB plusvolume_Click()
+  volume.Value += 1
+  NastaveniVolume()
+END
+
+PUBLIC SUB minusvolume_Click()
+  volume.Value -= 1
+  NastaveniVolume()
+END
+
+PUBLIC SUB posuvnik_MouseDown()
+  IF Mouse.Button = 1 THEN
+    posovani = TRUE
+  ENDIF
+END
+
+PUBLIC SUB posuvnik_MouseUp()
+  EXEC ["mocp", "--seek", posuvnik.Value - aktualni]
+  posovani = FALSE
+END
+
+'vykonani nastavovacich funkci
+PRIVATE SUB NastaveniFunkci()
+  'nahodne prehravani
+  IF stuffle.Value THEN
+    EXEC ["mocp", "--on", "shuffle"]
+  ELSE
+    EXEC ["mocp", "--off", "shuffle"]
+  ENDIF
+
+  'automaticky dalsi
+  IF autonext.Value THEN 
+    EXEC ["mocp", "--on", "autonext"]
+  ELSE
+    EXEC ["mocp", "--off", "autonext"]
+  ENDIF
+
+  IF repeat.Value THEN 
+    EXEC ["mocp", "--on", "repeat"]
+  ELSE
+    EXEC ["mocp", "--off", "repeat"]
+    'zajisteni prehravani jedne dokola!
+  ENDIF
+END
+
+'nastaveni nahodneho prehravani
+PUBLIC SUB stuffle_Click()
+  NastaveniFunkci()
+END
+
+'nastaveni auto prepinani
+PUBLIC SUB autonext_Click()
+  NastaveniFunkci()
+END
+
+'nastaveni opakovani
+PUBLIC SUB repeat_Click()
+  NastaveniFunkci()
+END
+
+'spojeni dir vypisu a file vypisu
+PUBLIC SUB DirView_Click()
+  FileView.Dir = DirView.Current
+END
+
+'zobrazeni popup menu
+PUBLIC SUB FileView_Menu()
+  popupfile.Popup
+END
+
+'zobrazeni skrytych slozek a souboru
+PUBLIC SUB unhide_Click()
+  fileView.ShowHidden = unhide.Checked
+END
+
+'prepinani zobrazeni normalniho nebo detailniho
+PUBLIC SUB menuzobr_Click()
+  DIM hmen AS Menu
+  DIM num AS Integer
+
+  num = Val(LAST.Tag)
+
+  FOR EACH hmen IN popupfile.Children
+    IF hmen.Tag THEN
+      hmen.Checked = Val(hmen.Tag) = num
+      IF hmen.Checked THEN INC FileView.ShowDetailed
+    ENDIF
+  NEXT
+END
+
+'vymazani playilistu
+PUBLIC SUB clear_Click()
+  IF Message.Question("opravdu vymazat playlist?", "jasně", "nene..") = 1 THEN EXEC ["mocp", "--clear"]
+END
+
+'pridani adresare
+PUBLIC SUB appenddir_Click()
+  IF DirView.Current <> "" THEN EXEC ["mocp", "--append", DirView.Current]
+END
+
+'pridani souboru
+PUBLIC SUB appendfile_Click()
+  IF FileView.Current <> "" THEN EXEC ["mocp", "--append", DirView.Current & "/" & FileView.Current]
+END
+
+'zobrazeni kontrolniho vystupu
+PUBLIC SUB onoffcontroll_Click()
+  controllout.X = 0
+  controllout.Y = 20
+  controllout.Text = ""
+  controllout.Visible = onoffcontroll.Value
+END
+
+'zobrazeni mocpu v terminalu
+PUBLIC SUB controllterm_Click()
+  EXEC [terminal, "mocp"]
+  controllterm.Enabled = FALSE
+END
+
+PUBLIC SUB showset_Click()
+
+  nastaveni.ShowModal()
+
+END
+
+PUBLIC SUB showplaylist_Click()
+  playlistframe.Visible = TRUE
+  playlistframe.X = 5
+  playlistframe.y = 5
+END
+
+PUBLIC SUB closeplaylist_Click()
+  playlistframe.Visible = FALSE
+END

@@ -1,0 +1,16 @@
+# Gambas Project File 2.0
+# Compiled with Gambas 2.13.1
+Title=gui pro mocp
+Startup=FMain
+Version=0.0.9
+Library=gb.qt
+Library=gb.form
+Library=gb.db
+Library=gb.qt.ext
+Library=gb.settings
+Description=Grafické klikátko pro konzolový přehrávač mocp\nzávislosti: mocp, (xterm) nebo nejaky Vámi používaný terminál, ps, grep
+Authors=GF Design, created by Geniv
+TabSize=2
+Maintainer=geniv
+Address=geniv@geniv-asus
+License=General Public Licence

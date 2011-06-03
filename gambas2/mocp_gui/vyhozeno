@@ -1,0 +1,150 @@
+'zavrit.Image
+  'zavrit.Picture.Image.Load(Application.Path & "/img/close_off.png")
+'Button1.Picture.Image.Load(Application.Path & "/img/close_off.png")
+  'progress.Value = 0.360
+  '"/img/close_off.png"
+'PictureBox2.Picture.Image.Load(Application.Path & "/img/close_off.png")
+
+'obr = NEW Picture
+'obr.Image.Load(Application.Path & "/img/close_off.png")
+'PRINT obr.Height
+'PictureBox2.Picture.Image.Load(Application.Path & "/img/close_off.png")
+'zavrit.Picture.Image = obr
+'zavrit.Picture.Image = obr
+'  obr.Image.Picture.Load(Application.Path & "/img/close_off.png")
+'zavrit.Picture.Load(Application.Path & "/img/close_off.png")
+  'IF delka < 100 THEN 
+  '  progress.Value = ((delka / 100) * aktualni) / 100
+  'ELSE 
+  '  progress.Value = ((delka / 100) * aktualni) / 1000
+  'ENDIF
+  '((delka / 100) * aktualni) / 100
+  'PRINT ((delka / 100) * aktualni) / 1000
+  
+  'FOR EACH Sb IN rozdel
+  '  PRINT Sb; "->";
+  'NEXT
+  'zavrit.Picture.Image.Rotate(25)
+  'zavrit.Refresh()
+  'zavrit.Visible = FALSE
+  'Message("uhuh")
+  'Load(Application.Path & "/img/min_on.png")
+  'zavrit.Picture.Image.
+'  zavrit.Picture = Picture.Load(Application.Path & "/img/close_on.png")
+  
+  'zavrit.Picture.Image.Load(Application.Path & "/img/close_off.png")
+'zavrit.Picture = obr
+  mezi = Scan($info, "[0-9 ]*")
+  PRINT mezi[0]
+  'PRINT $info
+'Scan - !!!!!
+Settings.Path = Application.Path & "/" & Application.Name & ".conf"
+      'Split($info, "\n")
+      'rozdel = Split($info, ":")
+      'mezi = Split(rozdel[11], "\n")
+      'delka = CFloat(mezi[0])  '100%
+      'mezi = Split(rozdel[14], "\n")
+      'PRINT mezi[0]
+      'aktualni = CFloat(mezi[0]) 'aktualni cislo z rozsahu 100%
+    'BREAK
+'BREAK 
+'DIM rozdel, mezi AS String[]
+  'DIM pokus AS String
+[popredi,] 
+      'prvek.Text = Mid$(prvek.Text, poc, delka)
+      ' IF poc > (delka - mezera) THEN 
+      '   poc = 1
+      ' ENDIF
+      '"ahojky"
+      IF poc < delka THEN 
+        
+      ELSE
+        prvek.Text = zacatek & String$(mezera, znak) & konec
+      ENDIF
+      ' IF poc = 1 THEN 
+      '   original = prvek.Text
+      ' ENDIF
+  'hButton = NEW Button(ME) AS "MyButton"
+  'casovac = NEW Timer(ME)
+PRIVATE casovac AS Timer
+'naimplementovat na vlastni timer
+  'ME.Height = Settings["Window/Height", ME.Height]
+  'ME.Width = Settings["Window/Width", ME.Width]
+  'Settings["Window/Height"] = ME.Height
+  'Settings["Window/Width"] = ME.Width
+    'PRINT posun;; progress.Width - 2;; aktualni;; delka
+    'posun = Mouse.ScreenX - ME.ScreenX - 3
+    'posuvnik.Value = aktualni
+    'PRINT posuvnik.Value
+    
+    'PRINT aktualni;; posuvnik.Value
+    
+    IF posuvnik.Value < aktualni THEN 
+     'posuvnik.Value *= -1
+     'PRINT posuvnik.Value
+    ENDIF
+    '
+'DIM posun AS Integer
+    'CASE "PAUSE"
+      'PRINT "pauza"
+      'obr pause
+    'RETURN 
+'DIM obr AS Picture
+  'ME.Minimized
+  'ME.Lower
+  'IF Key.Code = Key["Esc"] THEN ME.Close
+      TextLabel1.Text = progress.Value & ", max: " & delka & ", akt: " & aktualni
+      TextArea1.Text = $info
+  EXEC ["ps", "-A", "grep", "mocp"] TO ov
+  PRINT ov 
+, ov
+'nastaveni programu+jit po tom po cem mam! jt php!
+  'INC unhide.Checked
+IF = 1 THEN 
+    
+      ELSE
+    
+  ENDIF
+ ' IF NOT databaseConnection.Tables.Exist("pictures") THEN
+  '   PRINT "Database tables not found. Creating new pictures table"
+  '   ' Add a picture table to the database
+  '   pictureTable = databaseConnection.Tables.Add("pictures")
+  '   pictureTable.Fields.Add("id", db.Serial) '             id          field as autoinc integer
+  '   pictureTable.Fields.Add("thumb", db.Blob) '            thumb       field as blob
+  '   pictureTable.Fields.Add("image", db.Blob) '          ' image       field as blob
+  '   pictureTable.Fields.Add("description", db.String, 0) ' description field as unlimited string
+  '   pictureTable.PrimaryKey = ["id"]
+  '   pictureTable.Update()
+  ' END IF
+' 
+' PUBLIC SUB CloseDatabase()
+'   TRY databaseConnection.Close()
+'   IF ERROR THEN PRINT "Error closing database"
+' END
+  'IF res.Count = 1 THEN
+  'PRINT res["hodnota"]
+  'res = 
+'ENDIF
+  DIM res AS Result
+  'PRINT res!klic
+'"SELECT * FROM vzhled WHERE id=1"
+  ' res = dtb.Edit("vzhled")
+  ' 'RETURN res[sloupec]
+  ' res.MoveTo(1)
+  ' PRINT res[sloupec]
+  DIM overeni AS String
+  controllterm.Enabled = FALSE
+
+  SHELL ("ps -A | grep pts | grep mocp") TO overeni
+  IF overeni = "" THEN 
+      
+      ' IF controllterm.Enabled = FALSE THEN 
+      '   SHELL ("ps -A | grep pts | grep mocp") TO overeni
+      '   IF overeni = "" THEN controllterm.Enabled = TRUE
+      ' ENDIF 
+        ' SHELL ("ps -A | grep pts | grep mocp") TO overeni
+      ' IF overeni <> "" THEN 
+      '   controllterm.Enabled = FALSE
+      '     ELSE 
+      '   controllterm.Enabled = TRUE
+      ' ENDIF

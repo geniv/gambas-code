@@ -1,0 +1,226 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,68,44)
+  Text = ("")
+  Icon = Picture["icon:/32/audio"]
+  Border = Window.None
+  Minimized = True
+  { popupfile Menu
+    Text = ("hlavni")
+    Visible = False
+    { unhide Menu
+      Text = ("Zobrazit skryt\xC3\xA9")
+      Toggle = True
+    }
+    { memuoddel Menu
+      Text = ("")
+    }
+    { style1 Menu menuzobr
+      Name = "style1"
+      Text = ("Klasick\xC3\xA9 zobrazen\xC3\xAD")
+      Checked = True
+      Tag = "1"
+    }
+    { style2 Menu menuzobr
+      Name = "style2"
+      Text = ("Detailn\xC3\xAD zobrazeni")
+      Tag = "2"
+    }
+  }
+  { PictureBox1 PictureBox
+    MoveScaled(0,0,36.4286,18.4286)
+    Visible = False
+    Picture = Picture["img/plocha.png"]
+  }
+  { progress ProgressBar
+    MoveScaled(0.4286,12.1429,35.7143,1.4286)
+    Label = False
+  }
+  { casovac #Timer
+    #X = 273
+    #Y = 63
+  }
+  { trayicon #TrayIcon
+    #X = 315
+    #Y = 63
+    Visible = True
+  }
+  { volume Slider
+    MoveScaled(28.7143,14.7143,6.7143,3)
+    Value = 50
+  }
+  { minimalizace ToolButton
+    MoveScaled(32.1429,0,2.1429,2.1429)
+    Text = ("")
+  }
+  { zavrit ToolButton
+    MoveScaled(34.4286,0,2.1429,2.1429)
+    Text = ("")
+  }
+  { play ToolButton
+    MoveScaled(2,15,4,3)
+    Text = ("")
+  }
+  { stop ToolButton
+    MoveScaled(7,15,3,2)
+    Text = ("")
+  }
+  { prev ToolButton
+    MoveScaled(11,15,2,3)
+    Text = ("")
+  }
+  { next ToolButton
+    MoveScaled(14,15,3,3)
+    Background = &HC0314E&
+    Text = ("")
+  }
+  { title Label
+    MoveScaled(3,3,32,3)
+    Text = ("Label1")
+  }
+  { artist Label
+    MoveScaled(53,5,8,3)
+    Text = ("Label1")
+  }
+  { songtitle Label
+    MoveScaled(53,9,10,3)
+    Text = ("Label1")
+  }
+  { album Label
+    MoveScaled(53,13,9,3)
+    Text = ("Label1")
+  }
+  { totaltime Label
+    MoveScaled(53,17,9,2)
+    Text = ("Label1")
+  }
+  { timeleft Label
+    MoveScaled(53,21,9,3)
+    Text = ("Label1")
+  }
+  { currenttime Label
+    MoveScaled(53,25,9,3)
+    Text = ("Label1")
+  }
+  { bitrate Label
+    MoveScaled(20,20,11,4)
+    Text = ("Label1")
+  }
+  { avgbitrate Label
+    MoveScaled(20,26,12,3)
+    Text = ("Label1")
+  }
+  { rate Label
+    MoveScaled(20,30,12,3)
+    Text = ("Label1")
+  }
+  { mp3file Label
+    MoveScaled(3,27,12,3)
+    Text = ("Label1")
+  }
+  { state Label
+    MoveScaled(3,21,12,4)
+    Text = ("Label1")
+  }
+  { curvolume Label
+    MoveScaled(52,29,10,3)
+    Text = ("Label1")
+  }
+  { minusvolume ToolButton
+    MoveScaled(21,15,3,3)
+    Text = ("")
+  }
+  { plusvolume ToolButton
+    MoveScaled(25,15,3,3)
+    Text = ("")
+  }
+  { posuvnik Slider
+    MoveScaled(0.4286,13.4286,35.7143,0.7143)
+  }
+  { stuffle ToolButton
+    MoveScaled(18,8,3,3)
+    Text = ("")
+    Border = True
+    Toggle = True
+  }
+  { autonext ToolButton
+    MoveScaled(22,8,3,3)
+    Text = ("")
+    Border = True
+    Toggle = True
+    Value = True
+  }
+  { repeat ToolButton
+    MoveScaled(26,8,3,3)
+    Text = ("")
+    Border = True
+    Radio = True
+    Toggle = True
+  }
+  { repearone ToolButton repeat
+    Name = "repearone"
+    MoveScaled(30,8,3,3)
+    Text = ("")
+    Border = True
+    Radio = True
+    Toggle = True
+  }
+  { onoffcontroll CheckBox
+    MoveScaled(41,1,17,2)
+    Text = ("zobrazit vystup")
+  }
+  { Dial1 Dial
+    MoveScaled(46,20,4,4)
+  }
+  { showset ToolButton
+    MoveScaled(2,33,7,4)
+    Text = ("")
+  }
+  { showplaylist ToolButton
+    MoveScaled(12,33,9,4)
+    Text = ("")
+  }
+  { controllterm ToolButton
+    MoveScaled(39,15,6,4)
+    Text = ("")
+    Border = True
+  }
+  { playlistframe Frame
+    MoveScaled(1,36,67,42)
+    Visible = False
+    Text = ("Configurace playlistu")
+    { FileView FileView
+      MoveScaled(28,3,29,35)
+      ShowDirectory = True
+    }
+    { DirView DirView
+      MoveScaled(1,3,26,35)
+    }
+    { clear ToolButton
+      MoveScaled(58,2,7,3)
+      Text = ("")
+    }
+    { appenddir ToolButton
+      MoveScaled(58,9,7,5)
+      Text = ("")
+    }
+    { appendfile ToolButton
+      MoveScaled(58,17,7,5)
+      Text = ("")
+    }
+    { closeplaylist ToolButton
+      MoveScaled(52,39,13,2)
+      Text = ("")
+    }
+  }
+  { controllout TextArea
+    MoveScaled(66,4,66,38)
+    Visible = False
+    Text = ("")
+  }
+  { pok CheckBox
+    MoveScaled(39,27,7,6)
+    Text = ("CheckBox1")
+  }
+}

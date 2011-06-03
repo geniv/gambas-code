@@ -1,0 +1,46 @@
+' Gambas module file
+
+PRIVATE poc AS Integer
+PRIVATE mezera AS Integer
+PRIVATE znak AS String
+
+PUBLIC SUB _init()
+  poc = 0
+  mezera = 15
+  znak = " "
+END
+
+PUBLIC SUB RotujiciText(prvek AS Label, smer AS Boolean)  'rychlost AS Integer
+  DIM zacatek, konec, stred AS String
+  DIM delka AS Integer
+
+  SELECT CASE smer
+    CASE TRUE 'doleva
+      delka = String.Len(prvek.Text)
+
+      IF poc >= delka + mezera THEN
+        poc = 0
+      ENDIF
+
+      IF poc < delka THEN 
+        stred = String$(mezera, znak)
+          ELSE
+        stred = String$((delka + mezera) - poc, znak)
+      ENDIF
+
+      zacatek = Mid$(prvek.Text, 1, poc)
+      poc += 1
+      konec = Mid$(prvek.Text, poc, delka)
+
+      'prohozeni poradi a vlozeni odelovace
+      prvek.Text = konec & stred & zacatek
+
+    CASE FALSE
+      'result = "prava"
+
+    DEFAULT 
+      'result = "nic"
+  END SELECT
+
+  'PRINT prvek.Text
+END
