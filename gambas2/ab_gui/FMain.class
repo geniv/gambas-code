@@ -1,0 +1,89 @@
+' Gambas class file
+
+PRIVATE $proc AS Process
+
+PUBLIC SUB _new()
+
+END
+
+PUBLIC SUB Form_Open()
+
+  Settings.Read(ME)
+  hostname.Text = Settings["configure/url", ""]
+  concurrency.Text = Settings["configure/concurrency", 5]
+  requests.Text = Settings["configure/requests", 100]
+  port.Text = Settings["configure/port", 80] 
+  path.Text = Settings["configure/path", "/"]
+  proctable.Value = Settings["configure/proctable", FALSE]
+  keepalive.Value = Settings["configure/keepalive", FALSE]
+  hidemedian.Value = Settings["configure/hidemedian", FALSE]
+
+END
+
+PUBLIC SUB benchmark_Click()
+
+  result.Clear
+  getBenchmark()
+
+'TODO jeste pak pripadne parsrovat na urcite hodnoty:
+  'Requests per second:
+  'Time per request:
+END
+
+PUBLIC SUB getBenchmark()
+
+'" -g pokus.txt" &
+  cmdline.Text = "ab" &
+  IIf(concurrency.Text, " -c " & concurrency.Text, "")&
+  IIf(requests.Text, " -n " & requests.Text, "")&
+  IIf(proctable.Value, " -d", "")&
+  IIf(keepalive.Value, " -k", "")&
+  IIf(hidemedian.Value, " -S", "")&
+  " " & hostname.Text &
+  IIf(port.Text <> 0, ":" & port.Text, "")&
+  IIf(path.Text <> "/", path.Text, "")
+
+  $proc = SHELL cmdline.Text FOR INPUT
+
+END
+
+PUBLIC SUB Process_Read()
+
+  DIM sLine AS String
+  READ #LAST, sLine, -256
+  result.Text &= sLine
+
+  IF $proc.State = Process.Running THEN 
+    Application.Busy = 1
+      ELSE 
+    Application.Busy = 0
+  ENDIF 
+
+  start_panel.Enabled = IIf(Application.Busy = 1, FALSE, TRUE)
+  header_panel.Enabled = start_panel.Enabled
+
+END
+
+
+PUBLIC SUB Form_Close()
+
+  Settings.Write(ME)
+  Settings["configure/url"] = hostname.Text
+  Settings["configure/concurrency"] = concurrency.Text
+  Settings["configure/requests"] = requests.Text
+  Settings["configure/port"] = port.Text
+  Settings["configure/path"] = path.Text
+  Settings["configure/proctable"] = proctable.Value
+  Settings["configure/keepalive"] = keepalive.Value
+  Settings["configure/hidemedian"] = hidemedian.Value
+
+END
+
+PUBLIC SUB Form_Resize()
+
+  start_panel.Left = ME.Width - start_panel.Width - 7
+  result_panel.Resize(start_panel.Left - (7 + 7), ME.Height - header_panel.Height - (7 + 7))
+  result.Resize(result_panel.Width - (7 + 7), result_panel.Height - (28 + 7))
+
+END
+

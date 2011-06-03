@@ -1,0 +1,13 @@
+# Gambas Project File 2.0
+# Compiled with Gambas 2.22.0
+Title=Apache benchmark
+Startup=FMain
+Version=0.0.4
+Library=gb.qt
+Library=gb.form
+Library=gb.settings
+Description=GUI for Apache benchmark
+Authors=geniv.radek@gmail.com
+TabSize=2
+Translate=1
+Language=en
