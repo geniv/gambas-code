@@ -1,0 +1,25 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,50,50)
+  Background = &H000000&
+  Text = ("")
+  Border = Window.None
+  FullScreen = True
+  { Timer1 #Timer
+    #X = 182
+    #Y = 35
+  }
+  { Button1 Button
+    MoveScaled(2,32,10,3)
+    Text = ("konec")
+  }
+  { Timer2 #Timer
+    #X = 238
+    #Y = 35
+    Delay = 100
+  }
+  { MovieBox1 MovieBox
+    MoveScaled(3,5,22,16)
+  }
+}

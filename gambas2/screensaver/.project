@@ -1,0 +1,22 @@
+# Gambas Project File 2.0
+# Compiled with Gambas 2.22.0
+Title=screensaver
+Startup=FMain
+Version=0.0.15
+Library=gb.qt
+Library=gb.desktop
+Description=pokusny zeleznicni sporic pro linux
+Authors=Geniv (geniv.radek@gmail.com)
+TabSize=2
+SourcePath=/home/geniv/Downloads
+Maintainer=geniv
+Vendor=screensaver
+Address=geniv.radek@gmail.com
+Url=https://sites.google.com/site/genivgambas/
+License=General Public Licence
+UseRelease=1
+CreateEachDirectory=1
+Systems=ubuntu
+Menus=Screen/Saving
+Categories=Screensaver
+Groups=x11

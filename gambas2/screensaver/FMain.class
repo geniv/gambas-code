@@ -1,0 +1,82 @@
+' Gambas class file
+
+PRIVATE spusteno AS Boolean = FALSE
+
+PUBLIC SUB _new()
+  'systemove sporice v ubuntu jsou jen v opengl, jestli umi spouset obych programy nevim,
+  'ale vyresit se to da voklikou, a to tak ze se ten program da spoustet automaticky po startu
+  'syst.volba sporice bude vypnuta, a program sam si dejme tomu bude sam checkovat neaktivitu 
+  'a podle toho pak sporic zapne... budou sice fungovat v prihlasenem systemu ale aspon nekde
+  'otazkou je jak dobre se da odchytit radoby vnitrni spousteni sporice?!!!
+
+  'checkovat jestli je sporit aktivni, kdyz se zapne tak, tak ho tento program ukonci a
+  'misto toho spusti tento "sporic"
+END
+
+PUBLIC SUB Form_Open()
+  DIM roz_lang AS String[]
+  MovieBox1.Path = "zdroj/310-0/animation_10.gif"
+  Timer1.Start()
+  'Enabled = TRUE
+
+  ME.Visible = FALSE
+  PRINT Time();; "aktivovano"
+
+END
+
+PUBLIC SUB Form_KeyPress()
+  IF Key.Code = Key.Esc THEN 
+    'ME.Close()
+    ME.Visible = FALSE
+    spusteno = FALSE
+    PRINT Time();; "uspano"
+
+    Timer2.Stop() 'vypnuto
+    MovieBox1.Playing = FALSE 'zastaveno
+    MovieBox1.X = 0
+  ENDIF 
+END
+
+PUBLIC SUB Timer1_Timer()
+  DIM ret_shell AS String
+
+  SHELL "echo -n $( qdbus org.gnome.ScreenSaver / GetActive )" WAIT TO ret_shell
+
+  'SHELL "gnome-screensaver-command -q" WAIT TO ret_shell
+  'SHELL Subst("echo -n $( gnome-screensaver-command -q | grep -o '&1' )", IIf(jazyk = "cs_CZ", "neaktivní", "inactive")) WAIT TO ret_shell
+
+  'Label1.Text = ret_shell
+  'PRINT Time();; ret_shell
+  'ME.Show()
+  'Label1.Text = IIf(spusteno, "spusteno", "nespusteno")
+
+  IF NOT spusteno THEN
+    IF ret_shell = "true" THEN 'pokud je sporic zapnuty
+      ME.Visible = TRUE
+      Desktop.ScreenSaver.Reset()
+      spusteno = TRUE
+      PRINT Time();; "probuzeno"
+
+      Timer2.Start()  'zapnuto
+      MovieBox1.Refresh()
+      MovieBox1.Playing = TRUE  'nastaveni animace
+        ELSE 
+      ME.Visible = FALSE
+    ENDIF 
+  ENDIF
+
+END
+
+PUBLIC SUB Button1_Click()
+  ME.Close(0)
+END
+
+PUBLIC SUB Timer2_Timer()
+
+  MovieBox1.X += 8
+  IF MovieBox1.X > ME.Width THEN 
+    MovieBox1.X = 0
+    MovieBox1.Refresh()
+  ENDIF 
+
+END
