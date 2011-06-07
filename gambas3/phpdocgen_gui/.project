@@ -1,0 +1,14 @@
+# Gambas Project File 3.0
+# Compiled with Gambas 2.99.1
+Title=phpdocgen GUI
+Startup=FMain
+Version=0.0.1
+Component=gb.image
+Component=gb.qt4
+Component=gb.form
+Component=gb.settings
+Description="GUI for program phpdocgen"
+Authors="geniv.radek@gmail.com"
+TabSize=2
+Translate=1
+Language=en

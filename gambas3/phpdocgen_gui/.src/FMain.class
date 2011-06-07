@@ -1,0 +1,92 @@
+' Gambas class file
+
+Private $input_path As String
+Private $output_path As String
+Private $project_path As String
+Private $sett As Settings
+
+Public Sub _new()
+  
+End
+
+Public Sub Form_Open()
+  
+  $project_path = Settings["project/path", ""]
+  If Not Exist($project_path) Then
+    Dialog.Title = ("Path for new project")
+    If Dialog.SelectDirectory() Then Return
+    $project_path = Dialog.Path &/ InputBox(("Name project"), ("Name for project"), ("Project")) & ".conf"
+  Else
+    Me.Title = File.BaseName($project_path) & " - " & ("phpdocgen GUI")
+  Endif
+  $sett = New Settings($project_path)
+  $input_path = $sett["path/input", ""]
+  $output_path = $sett["path/output", ""]
+  input_button.Tooltip = $input_path
+  output_button.Tooltip = $output_path
+  defpack_text.Text = $sett["text/defpack", ""]
+  doctitle_text.Text = $sett["text/doctitle", ""]
+  windowtitle_text.Text = $sett["text/windowtitle", ""]
+  tema_select.Index = $sett["select/theme", 0]
+  language_select.Index = $sett["select/language", 0]
+  force_check.Value = $sett["check/force", True]
+  html_check.Value = $sett["check/html", True]
+  recurscan_check.Value = $sett["check/recurse", True]
+  source_check.Value = $sett["check/source", False]
+  
+End
+
+Public Sub Form_Close()
+  
+  Settings["project/path"] = $project_path
+  If $sett Then
+    $sett["path/input"] = $input_path
+    $sett["path/output"] = $output_path
+    $sett["text/defpack"] = defpack_text.Text
+    $sett["text/doctitle"] = doctitle_text.Text
+    $sett["text/windowtitle"] = windowtitle_text.Text
+    $sett["select/theme"] = tema_select.Index
+    $sett["select/language"] = language_select.Index
+    $sett["check/force"] = force_check.Value
+    $sett["check/html"] = html_check.Value
+    $sett["check/recurse"] = recurscan_check.Value
+    $sett["check/source"] = source_check.Value
+  Endif
+  
+End
+
+Public Sub input_button_Click()
+  
+  If Dialog.SelectDirectory() Then Return
+  $input_path = Dialog.Path
+  input_button.Tooltip = $input_path
+  
+End
+
+Public Sub output_button_Click()
+  
+  If Dialog.SelectDirectory() Then Return
+  $output_path = Dialog.Path
+  output_button.Tooltip = $output_path
+  
+End
+
+Public Sub generate_button_Click()
+
+  generate_button.Tag = "phpdocgen" &
+  If(force_check.Value, " --force", "") &
+  " --theme " & tema_select.Text &
+  " --lang " & language_select.Text &
+  If(html_check.Value, " --html", "") &
+  If(defpack_text.Text, Subst(" --defpack '&1'", defpack_text.Text), "") &
+  If(doctitle_text.Text, Subst(" --doctitle '&1'", doctitle_text.Text), "") & 
+  If(windowtitle_text.Text, Subst(" --windowtitle '&1'", windowtitle_text.Text), "") & 
+  If(source_check.Value, " --sources", "") &
+  Subst(" -o '&1'", $output_path) &
+  If(recurscan_check.Value, " -r", "") &
+  Subst(" '&1'", $input_path) 
+
+  Shell generate_button.Tag Wait To output_text.Text
+  output_text.Text = generate_button.Tag & "\n\n" & output_text.Text
+
+End

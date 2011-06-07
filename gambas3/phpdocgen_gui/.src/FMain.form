@@ -1,0 +1,76 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,74,50)
+  { tema_select ComboBox
+    MoveScaled(21,1,24,4)
+    ReadOnly = True
+    List = [("Dyna"), ("JavaDoc")]
+    Text = ("Dyna")
+  }
+  { force_check CheckBox
+    MoveScaled(48,1,24,4)
+    Text = ("Force")
+    Value = CheckBox.True
+  }
+  { html_check CheckBox
+    MoveScaled(48,4,24,4)
+    Text = ("Html")
+    Value = CheckBox.True
+  }
+  { language_select ComboBox
+    MoveScaled(21,6,24,4)
+    ReadOnly = True
+    List = [("English"), ("French")]
+    Text = ("English")
+  }
+  { recurscan_check CheckBox
+    MoveScaled(48,7,24,4)
+    Text = ("Scan recursive")
+  }
+  { output_button Button
+    MoveScaled(1,6,16,4)
+    Text = ("Select output...")
+  }
+  { input_button Button
+    MoveScaled(1,1,16,4)
+    Text = ("Select input...")
+  }
+  { Panel1 Panel
+    MoveScaled(1,12,26,27)
+    Border = Border.Sunken
+    { Label1 Label
+      MoveScaled(1,1,24,4)
+      Text = ("Default pack name")
+    }
+    { defpack_text TextBox
+      MoveScaled(1,5,24,4)
+    }
+    { Label2 Label
+      MoveScaled(1,9,24,4)
+      Text = ("Document title")
+    }
+    { doctitle_text TextBox
+      MoveScaled(1,13,24,4)
+    }
+    { windowtitle_text TextBox
+      MoveScaled(1,21,24,4)
+    }
+    { Label3 Label
+      MoveScaled(1,17,24,4)
+      Text = ("Window title")
+    }
+  }
+  { generate_button Button
+    MoveScaled(29,11,16,4)
+    Text = ("Generate")
+  }
+  { output_text TextArea
+    MoveScaled(28,17,45,22)
+    ReadOnly = True
+  }
+  { source_check CheckBox
+    MoveScaled(48,10,24,4)
+    Text = ("Preview source code")
+  }
+}
