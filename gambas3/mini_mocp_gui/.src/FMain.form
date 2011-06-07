@@ -1,34 +1,46 @@
 # Gambas Form File 3.0
 
 { Form Form
-  MoveScaled(0,0,43,13)
+  MoveScaled(0,0,26,6)
+  Border = False
   SkipTaskbar = True
+  Arrangement = Arrange.Fill
   { traymenu Menu
     Visible = False
     { hide Menu
-      Text = ("Skrýt")
+      Text = ("Hide")
     }
     { Menu3 Menu
     }
     { next Menu
-      Text = ("Další")
+      Text = ("Next")
       Picture = Picture["icon:/22/next"]
     }
     { prev Menu
-      Text = ("Předchozí")
+      Text = ("Prev")
       Picture = Picture["icon:/22/previous"]
     }
     { Menu1 Menu
     }
     { stop Menu
-      Text = ("Zastavit")
+      Text = ("Stop")
       Picture = Picture["icon:/22/stop"]
     }
     { Menu2 Menu
     }
     { close Menu
-      Text = ("Zavřít")
+      Text = ("Close")
       Picture = Picture["icon:/22/close"]
     }
+  }
+  { Timer1 #Timer
+    #MoveScaled(6,1)
+    Delay = 5000
+  }
+  { Label1 Label
+    MoveScaled(1,1,24,4)
+    Padding = 5
+    AutoResize = True
+    Alignment = Align.Center
   }
 }

@@ -2,11 +2,13 @@
 # Compiled with Gambas 2.99.1
 Title=Mini moc gui
 Startup=FMain
-Version=0.0.1
+Version=0.0.2
 Component=gb.image
 Component=gb.qt4
 Component=gb.form
 Component=gb.desktop
-Description="Mini ovladac mocp prehlavace do tray listy"
+Description="Mini control for program mocp player to Tray-icon"
 Authors="geniv.radek@gmail.com"
 TabSize=2
+Translate=1
+Language=en

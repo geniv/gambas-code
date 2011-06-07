@@ -8,6 +8,8 @@ Public Sub _new()
   $tray = New TrayIcon As "MyTray"
   $tray.Picture = Picture["icon:/22/audio"]
   $tray.Show()
+  Timer1.Start()
+  Timer1_Timer()
   
 End
 
@@ -17,21 +19,28 @@ Public Sub Form_Open()
   
   Shell "echo -n $( mocp --info | awk -W posix '/State/ { print $2 }' )" Wait To state
   $play = If(state = "PLAY", True, False)
+  setTrayIcon()
+  
+End
 
+Public Sub setTrayIcon()
+  
+  If $play Then
+    $tray.Picture = Picture["icon:/22/play"]
+  Else
+    $tray.Picture = Picture["icon:/22/pause"]
+  Endif
+  
 End
 
 Public Sub MyTray_MouseDown()
   
   If Mouse.Left Then
     $tray.Picture = Null
-    If $play Then
-      $tray.Picture = Picture["icon:/22/pause"]
-    Else
-      $tray.Picture = Picture["icon:/22/play"]
-    Endif
+    $play = Not $play
+    setTrayIcon()
     '$tray.Picture.Flush
     Shell "mocp --toggle-pause" Wait
-    $play = Not $play
   Endif
   
 End
@@ -46,10 +55,10 @@ Public Sub hide_Click()
   
   If Me.Visible Then
     Me.Window.Hide()
-    hide.Text = "Zobrazit"
+    hide.Text = ("Show")
   Else
     Me.Window.Show()
-    hide.Text = "Skrýt"
+    hide.Text = ("Hide")
   Endif
   
 End
@@ -69,5 +78,21 @@ End
 Public Sub close_Click() 
   
   Me.Window.Close
+  
+End
+
+Public Sub Timer1_Timer()
+  
+  Dim state As String
+
+  Shell "echo -n $( mocp --info | awk \'{ if (/TotalTime:/){a=$2} if (/CurrentTime:/){b=$2} } END { print b \" / \" a }\' )" Wait To state
+  $tray.Text = state
+  Label1.Text = Subst(("Time: &1"), state)
+  
+End
+
+Public Sub Label1_MouseDown()
+  
+  hide_Click()
   
 End
