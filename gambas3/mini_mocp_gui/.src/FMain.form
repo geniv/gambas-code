@@ -1,0 +1,34 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,43,13)
+  SkipTaskbar = True
+  { traymenu Menu
+    Visible = False
+    { hide Menu
+      Text = ("Skrýt")
+    }
+    { Menu3 Menu
+    }
+    { next Menu
+      Text = ("Další")
+      Picture = Picture["icon:/22/next"]
+    }
+    { prev Menu
+      Text = ("Předchozí")
+      Picture = Picture["icon:/22/previous"]
+    }
+    { Menu1 Menu
+    }
+    { stop Menu
+      Text = ("Zastavit")
+      Picture = Picture["icon:/22/stop"]
+    }
+    { Menu2 Menu
+    }
+    { close Menu
+      Text = ("Zavřít")
+      Picture = Picture["icon:/22/close"]
+    }
+  }
+}

@@ -1,0 +1,73 @@
+' Gambas class file
+
+Private $tray As TrayIcon
+Private $play As Boolean
+
+Public Sub _new()
+  
+  $tray = New TrayIcon As "MyTray"
+  $tray.Picture = Picture["icon:/22/audio"]
+  $tray.Show()
+  
+End
+
+Public Sub Form_Open()
+  
+  Dim state As String
+  
+  Shell "echo -n $( mocp --info | awk -W posix '/State/ { print $2 }' )" Wait To state
+  $play = If(state = "PLAY", True, False)
+
+End
+
+Public Sub MyTray_MouseDown()
+  
+  If Mouse.Left Then
+    $tray.Picture = Null
+    If $play Then
+      $tray.Picture = Picture["icon:/22/pause"]
+    Else
+      $tray.Picture = Picture["icon:/22/play"]
+    Endif
+    '$tray.Picture.Flush
+    Shell "mocp --toggle-pause" Wait
+    $play = Not $play
+  Endif
+  
+End
+
+Public Sub MyTray_Menu()
+  
+  traymenu.Popup
+  
+End
+
+Public Sub hide_Click() 
+  
+  If Me.Visible Then
+    Me.Window.Hide()
+    hide.Text = "Zobrazit"
+  Else
+    Me.Window.Show()
+    hide.Text = "Skrýt"
+  Endif
+  
+End
+
+Public Sub next_Click() 
+  
+  Shell "mocp --next" Wait
+  
+End
+
+Public Sub prev_Click()
+  
+  Shell "mocp --previous" Wait
+  
+End
+
+Public Sub close_Click() 
+  
+  Me.Window.Close
+  
+End
