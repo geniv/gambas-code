@@ -2,7 +2,7 @@
 # Compiled with Gambas 2.99.1
 Title=phpdocgen GUI
 Startup=FMain
-Version=0.0.1
+Version=0.0.2
 Component=gb.image
 Component=gb.qt4
 Component=gb.form
