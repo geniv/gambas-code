@@ -11,14 +11,40 @@ Geometry=[0,0,210,210]
 [DebugWindow/$sett.Keys]
 Geometry=[14,14,210,210]
 
+[DebugWindow/Application]
+Geometry=[0,0,346,391]
+
+[DebugWindow/Application.Args]
+Geometry=[14,14,346,391]
+
+[DebugWindow/Application.Env]
+Geometry=[14,14,346,391]
+
+[DebugWindow/Application.Startup]
+Geometry=[14,14,346,391]
+
+[DebugWindow/Application.Startup.Symbols]
+Geometry=[28,28,346,391]
+
+[DebugWindow/Application.ToolTip]
+Geometry=[14,14,346,391]
+
+[DebugWindow/Application.ToolTip.Font]
+Geometry=[28,28,346,391]
+
+[DebugWindow/Application.ToolTip.Font.Styles]
+Geometry=[42,42,346,391]
+
 [DebugWindow/proc]
 Geometry=[0,0,267,326]
 
+[FCommit]
+LastCommit="opravena cesta na spousteni perl parseru\npridan changelog\n---- Tento řádek a následující budou ignorovány ----\n\nM       .startup\nM       .project\nM       .src/FMain.class\nA       .hidden/CHANGELOG\nA       phpdocgen-gui.png"
+
 [OpenFile]
-File[1]=".src/FMain.form"
-Active=2
-File[2]=".src/FMain.class:87.0"
-Count=2
+Active=1
+File[1]=".src/FMain.class:74.0"
+Count=1
 
 [Watches]
 Count=0

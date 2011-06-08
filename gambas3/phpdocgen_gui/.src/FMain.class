@@ -73,6 +73,10 @@ End
 
 Public Sub generate_button_Click()
 
+  Dim ted As Date
+  ted = Now()
+  generate_button.Tooltip = Subst("&1.&2.&3 &4:&5:&6", Day(ted), Month(ted), Year(ted), Hour(ted), Minute(ted), Second(ted)) 'zaznamenani data
+
   generate_button.Tag = Application.Path &/ "phpdocgen/phpdocgen.perl" &
   If(force_check.Value, " --force", "") &
   " --theme " & tema_select.Text &
@@ -86,6 +90,7 @@ Public Sub generate_button_Click()
   If(recurscan_check.Value, " -r", "") &
   Subst(" '&1'", $input_path) 
 
+  output_text.Clear()
   Shell generate_button.Tag Wait To output_text.Text
   output_text.Text = generate_button.Tag & "\n\n" & output_text.Text
 
