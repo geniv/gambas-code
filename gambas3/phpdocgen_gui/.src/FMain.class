@@ -73,7 +73,7 @@ End
 
 Public Sub generate_button_Click()
 
-  generate_button.Tag = "phpdocgen/phpdocgen.perl" &
+  generate_button.Tag = Application.Path &/ "phpdocgen/phpdocgen.perl" &
   If(force_check.Value, " --force", "") &
   " --theme " & tema_select.Text &
   " --lang " & language_select.Text &

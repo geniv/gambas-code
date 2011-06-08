@@ -2,7 +2,7 @@
 # Compiled with Gambas 2.99.1
 Title=phpdocgen GUI
 Startup=FMain
-Version=0.0.2
+Version=0.0.5
 Component=gb.image
 Component=gb.qt4
 Component=gb.form
@@ -12,3 +12,16 @@ Authors="geniv.radek@gmail.com"
 TabSize=2
 Translate=1
 Language=en
+Maintainer=geniv
+Address=geniv.radek@gmail.com
+Url=https://code.google.com/p/gambas-code/
+License=General Public License
+UseRelease=1
+PackageName=phpdocgen_gui-0.0.5
+Systems=debian,ubuntu
+Menus=Applications/Programming,Applications/Programming
+Categories=Documentation,Documentation
+Groups=php,php
+ExtraDependencies=perl::,
+SameDependencies=1
+ExtraFiles=,
