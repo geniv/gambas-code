@@ -7,10 +7,13 @@ Count=0
 [DebugWindow/Last]
 Geometry=[0,0,283,390]
 
+[FCommit]
+LastCommit="upravena funkce\npridan casovac\nupravena kontrola pocatecniho stavu\n---- Tento řádek a následující budou ignorovány ----\n\nA       .lang\nA       .lang/cs.mo\nA       .lang/cs.po\nM       .project\nM       .src/FMain.form\nM       .src/FMain.class"
+
 [OpenFile]
-Active=1
 File[1]=".src/FMain.form"
-File[2]=".src/FMain.class:8.14"
+Active=2
+File[2]=".src/FMain.class:90.2"
 Count=2
 
 [Watches]
