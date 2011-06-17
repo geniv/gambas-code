@@ -24,22 +24,22 @@ Public Sub Form_Open()
 End
 
 Public Sub setTrayIcon()
-  
+
+  $tray.Hide()
   If $play Then
     $tray.Picture = Picture["icon:/22/play"]
   Else
     $tray.Picture = Picture["icon:/22/pause"]
   Endif
-  
+  $tray.Show()
+
 End
 
 Public Sub MyTray_MouseDown()
   
   If Mouse.Left Then
-    $tray.Picture = Null
     $play = Not $play
     setTrayIcon()
-    '$tray.Picture.Flush
     Shell "mocp --toggle-pause" Wait
   Endif
   
@@ -75,6 +75,19 @@ Public Sub prev_Click()
   
 End
 
+Public Sub stop_Click()
+  
+  'rozpracovat vice stavu, play/pause/stop
+  'rozlisovat typ prehravani: music/net
+  Shell "mocp --stop" Wait
+  
+  $tray.Hide()
+  $tray.Picture = Picture["icon:/22/audio"]
+  $tray.Show()
+  
+End
+
+
 Public Sub close_Click() 
   
   Me.Window.Close
@@ -84,7 +97,7 @@ End
 Public Sub Timer1_Timer()
   
   Dim state As String
-
+  'TODO udelat trochu jinak to nacitani! nacist vsechno a pak to postupne potrebne data predhazovat awk-cku
   Shell "echo -n $( mocp --info | awk \'{ if (/TotalTime:/){a=$2} if (/CurrentTime:/){b=$2} } END { print b \" / \" a }\' )" Wait To state
   $tray.Text = state
   Label1.Text = Subst(("Time: &1"), state)

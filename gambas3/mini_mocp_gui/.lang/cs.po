@@ -10,21 +10,25 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: FMain.form:54
-msgid "Close"
-msgstr "Zavřít"
-
-#: FMain.form:26
-msgid "Hide"
-msgstr "Skrýt"
+#: .project:1
+msgid "Mini moc gui"
+msgstr "-"
 
 #: .project:2
 msgid "Mini control for program mocp player to Tray-icon"
 msgstr "Mini ovládání pro přehrávač mocp do Tray-icony"
 
-#: .project:1
-msgid "Mini moc gui"
-msgstr "-"
+#: FMain.class:58
+msgid "Show"
+msgstr "Zobrazit"
+
+#: FMain.class:90
+msgid "Time: &1"
+msgstr "Čas: &1"
+
+#: FMain.form:26
+msgid "Hide"
+msgstr "Skrýt"
 
 #: FMain.form:33
 msgid "Next"
@@ -34,15 +38,10 @@ msgstr "Další"
 msgid "Prev"
 msgstr "Předchozí"
 
-#: FMain.class:58
-msgid "Show"
-msgstr "Zobrazit"
-
 #: FMain.form:46
 msgid "Stop"
 msgstr "Zastavit"
 
-#: FMain.class:89
-msgid "Time: &1"
-msgstr "Čas: &1"
-
+#: FMain.form:54
+msgid "Close"
+msgstr "Zavřít"
